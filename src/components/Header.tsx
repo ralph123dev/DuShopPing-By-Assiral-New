@@ -4,6 +4,7 @@
  */
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, Bell, Menu, CircleUser, Heart, ChevronDown, Check, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -26,6 +27,7 @@ export default function Header({
   openFavorites,
   onAddProductClick
 }: HeaderProps) {
+  const navigate = useNavigate();
   const [showCategoriesMenu, setShowCategoriesMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -52,7 +54,11 @@ export default function Header({
         <div className="flex items-center gap-6 shrink-0">
           <motion.div 
             whileHover={{ scale: 1.03 }}
-            onClick={() => { setSearchQuery(''); setSelectedCategory('Tous'); }}
+            onClick={() => { 
+              setSearchQuery(''); 
+              setSelectedCategory('Tous'); 
+              navigate('/');
+            }}
             className="text-2xl sm:text-3xl font-bold font-display text-brand flex items-center gap-1 cursor-pointer select-none"
             id="brand-logo"
           >
@@ -61,7 +67,11 @@ export default function Header({
 
           <nav className="hidden lg:flex items-center gap-1">
             <button
-              onClick={() => { setSelectedCategory('Tous'); setSearchQuery(''); }}
+              onClick={() => { 
+                setSelectedCategory('Tous'); 
+                setSearchQuery(''); 
+                navigate('/');
+              }}
               className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
                 selectedCategory === 'Tous' && !searchQuery
                   ? 'text-brand bg-brand-light border-b-2 border-brand'
@@ -106,6 +116,7 @@ export default function Header({
                         onClick={() => {
                           setSelectedCategory(cat.value);
                           setShowCategoriesMenu(false);
+                          navigate('/');
                         }}
                         className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left text-xs sm:text-sm transition-all cursor-pointer ${
                           selectedCategory === cat.value
@@ -131,7 +142,10 @@ export default function Header({
             <input
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                navigate('/');
+              }}
               placeholder="Rechercher par article, artisan ou catégorie..."
               className="w-full text-xs sm:text-sm pl-9 pr-8 py-2 bg-[#f0f4fc] border border-transparent focus:bg-white focus:ring-2 focus:ring-brand focus:border-brand rounded-2xl placeholder:text-slate-400 transition-all text-slate-800"
               id="search-input"

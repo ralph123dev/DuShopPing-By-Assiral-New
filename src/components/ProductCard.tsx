@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Phone, MessageSquare, Star, BadgeCheck, Heart, MapPin } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Product } from '../types';
@@ -26,9 +27,14 @@ export default function ProductCard({
   onCallSeller,
   onChatSeller
 }: ProductCardProps) {
+  const navigate = useNavigate();
   
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('fr-FR').format(price) + ' FCFA';
+  };
+
+  const handleCardClick = () => {
+    navigate(`/product/${product.id}`);
   };
 
   if (variant === 'detailed') {
@@ -36,7 +42,8 @@ export default function ProductCard({
     return (
       <motion.div
         whileHover={{ y: -6, transition: { duration: 0.15 } }}
-        className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col h-full relative"
+        onClick={handleCardClick}
+        className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col h-full relative cursor-pointer"
         id={`product-card-${product.id}`}
       >
         {/* Favorite Button */}
@@ -81,7 +88,13 @@ export default function ProductCard({
           <div>
             {/* Seller profile Bar */}
             <div className="flex items-center justify-between gap-2 mb-2 text-xs">
-              <div className="flex items-center gap-1 font-semibold text-slate-800">
+              <div 
+                className="flex items-center gap-1 font-semibold text-slate-800 hover:text-emerald-750 hover:underline"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/seller/${encodeURIComponent(product.seller)}`);
+                }}
+              >
                 <span className="truncate max-w-[120px]">{product.seller}</span>
                 {product.hasBadge && (
                   <BadgeCheck className="w-4 h-4 text-emerald-600 shrink-0" title="Vendeur Vérifié" />
@@ -123,7 +136,10 @@ export default function ProductCard({
             <div className="grid grid-cols-2 gap-2">
               <motion.button
                 whileTap={{ scale: 0.95 }}
-                onClick={() => onCallSeller(product)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onCallSeller(product);
+                }}
                 className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl border border-slate-200 hover:border-brand text-slate-700 hover:text-brand text-xs font-semibold hover:bg-slate-50 transition-colors cursor-pointer"
               >
                 <Phone className="w-4 h-4 shrink-0" />
@@ -132,7 +148,10 @@ export default function ProductCard({
 
               <motion.button
                 whileTap={{ scale: 0.95 }}
-                onClick={() => onChatSeller(product)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onChatSeller(product);
+                }}
                 className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-brand hover:bg-brand-hover text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
               >
                 <MessageSquare className="w-4 h-4 shrink-0" />
@@ -149,7 +168,8 @@ export default function ProductCard({
     return (
       <motion.div
         whileHover={{ y: -5, transition: { duration: 0.15 } }}
-        className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col h-full relative"
+        onClick={handleCardClick}
+        className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col h-full relative cursor-pointer"
         id={`product-card-pop-${product.id}`}
       >
         {/* Favorite Trigger */}
@@ -173,7 +193,13 @@ export default function ProductCard({
             className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-300"
           />
           {/* Subtle watermark in image to hint at original design feel but kept extremely readable */}
-          <div className="absolute bottom-2 left-2 bg-black/15 backdrop-blur-xs px-2 py-0.5 rounded text-[10px] text-white font-semibold">
+          <div 
+            className="absolute bottom-2 left-2 bg-black/40 hover:bg-black/65 backdrop-blur-xs px-2 py-0.5 rounded text-[10px] text-white font-semibold z-10"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/seller/${encodeURIComponent(product.seller)}`);
+            }}
+          >
             {product.seller}
           </div>
         </div>
@@ -198,7 +224,10 @@ export default function ProductCard({
             </span>
             <div className="flex items-center gap-1 text-slate-400">
               <button
-                onClick={() => onCallSeller(product)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onCallSeller(product);
+                }}
                 className="p-1 px-1.5 text-slate-600 hover:text-brand hover:bg-brand-light rounded transition-all cursor-pointer"
                 title="Consulter le numéro"
                 aria-label="Appeler le vendeur"
@@ -206,7 +235,10 @@ export default function ProductCard({
                 <Phone className="w-3.5 h-3.5" />
               </button>
               <button
-                onClick={() => onChatSeller(product)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onChatSeller(product);
+                }}
                 className="p-1 px-1.5 text-slate-600 hover:text-brand hover:bg-brand-light rounded transition-all cursor-pointer"
                 title="Ouvrir le chat interactif"
                 aria-label="Discuter avec le vendeur"

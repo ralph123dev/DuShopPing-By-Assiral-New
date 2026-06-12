@@ -4,11 +4,10 @@
  */
 
 import { useState } from 'react';
-import { Megaphone, X } from 'lucide-react';
+import { Megaphone } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function Banner728x90() {
-  const [isVisible, setIsVisible] = useState(true);
   const [adIndex, setAdIndex] = useState(0);
 
   const ads = [
@@ -33,14 +32,11 @@ export default function Banner728x90() {
     setAdIndex((prev) => (prev + 1) % ads.length);
   };
 
-  if (!isVisible) return null;
-
   return (
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, height: 0 }}
         className="w-full bg-[#e8eefc] border-b border-blue-100 py-2.5 px-4 relative flex flex-col items-center justify-center min-h-[70px]"
         id="top-ad-banner"
       >
@@ -60,15 +56,6 @@ export default function Banner728x90() {
             {ads[adIndex].action}
           </button>
         </div>
-        <button
-          onClick={() => setIsVisible(false)}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-400 hover:text-blue-900 transition-colors p-1 rounded-full cursor-pointer"
-          title="Fermer la publicité"
-          aria-label="Fermer la publicité"
-          id="close-top-ad"
-        >
-          <X className="w-4 h-4" />
-        </button>
       </motion.div>
     </AnimatePresence>
   );

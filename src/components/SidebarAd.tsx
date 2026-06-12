@@ -3,17 +3,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
-import { Sparkles, Eye, X } from 'lucide-react';
+import { Eye } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface SidebarAdProps {
   position: 'left' | 'right';
+  variant?: 'vertical' | 'horizontal';
 }
 
-export default function SidebarAd({ position }: SidebarAdProps) {
-  const [isVisible, setIsVisible] = useState(true);
-
+export default function SidebarAd({ position, variant = 'vertical' }: SidebarAdProps) {
   const ads = {
     left: {
       tag: "DÉCOREZ",
@@ -33,24 +31,60 @@ export default function SidebarAd({ position }: SidebarAdProps) {
 
   const ad = ads[position];
 
-  if (!isVisible) return (
-    <div className="w-[160px] bg-slate-100 border border-dashed border-slate-200 h-[600px] flex flex-col items-center justify-center p-3 text-center rounded-2xl shrink-0 opacity-60">
-      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-2">Espace Publicitaire</p>
-      <button 
-        onClick={() => setIsVisible(true)}
-        className="text-[10px] text-brand hover:underline font-semibold cursor-pointer"
+  if (variant === 'horizontal') {
+    return (
+      <div
+        className="w-full bg-[#f0f4fc] border border-blue-105 p-3 sm:p-4 rounded-2xl shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4"
+        id={`${position}-horizontal-ad`}
       >
-        Réafficher la pub
-      </button>
-    </div>
-  );
+        <div className="flex flex-col sm:flex-row items-center gap-4 flex-1 w-full min-w-0">
+          {/* Ad Image */}
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border border-slate-100 shrink-0">
+            <img 
+              src={ad.image} 
+              alt={ad.title} 
+              className="w-full h-full object-cover"
+            />
+          </div>
+          
+          <div className="space-y-1 text-center sm:text-left min-w-0 flex-1">
+            <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
+              <span className="text-[9px] font-bold text-blue-500 tracking-widest uppercase">
+                PUBLICITÉ
+              </span>
+              <span className="bg-brand text-white text-[8px] font-bold px-2 py-0.5 rounded-full inline-block">
+                {ad.tag}
+              </span>
+            </div>
+            <h4 className="text-xs sm:text-sm font-bold text-slate-800 truncate">
+              {ad.title}
+            </h4>
+            <p className="text-[10px] sm:text-xs text-slate-500 line-clamp-2">
+              {ad.description}
+            </p>
+          </div>
+        </div>
+
+        {/* Action button */}
+        <div className="shrink-0 w-full sm:w-auto">
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={() => alert(`Offre publicitaire: ${ad.title}`)}
+            className="w-full sm:w-auto bg-[#02603c] hover:bg-brand-hover text-white text-xs font-bold py-2 px-4 rounded-xl flex items-center justify-center gap-1 shadow-xs cursor-pointer"
+          >
+            <Eye className="w-3.5 h-3.5" />
+            <span>{ad.cta}</span>
+          </motion.button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0 }}
         className="w-[160px] bg-[#f0f4fc] border border-blue-100 h-[600px] flex flex-col justify-between p-4 rounded-2xl shrink-0 shadow-xs relative"
         id={`${position}-sidebar-ad`}
       >
@@ -60,14 +94,6 @@ export default function SidebarAd({ position }: SidebarAdProps) {
             <span className="text-[9px] font-bold text-blue-500 tracking-widest uppercase">
               PUBLICITÉ
             </span>
-            <button
-              onClick={() => setIsVisible(false)}
-              className="text-slate-400 hover:text-slate-600 p-0.5 rounded-full hover:bg-slate-200/50 cursor-pointer"
-              title="Masquer"
-              aria-label="Masquer la publicité"
-            >
-              <X className="w-3.5 h-3.5" />
-            </button>
           </div>
 
           <span className="bg-brand text-white text-[8px] font-bold px-2 py-0.5 rounded-full inline-block mb-2">
