@@ -1,0 +1,6 @@
+{
+  "name": "DuShopPing",
+  "description": "Page d'accueil de l'application web marketplace DuShopPing, inspirée par les produits artisanaux et l'excellence du marché africain.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
