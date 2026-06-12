@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Search, Bell, Menu, CircleUser, Heart, ChevronDown, Check, Sparkles } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { Search, Bell, Heart, ChevronDown, Sparkles, ShoppingBag, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface HeaderProps {
@@ -18,6 +18,25 @@ interface HeaderProps {
   onAddProductClick: () => void;
 }
 
+interface ProductVignette {
+  id: string;
+  title: string;
+  price: number;
+  image: string;
+  seller: string;
+}
+
+interface Subcategory {
+  name: string;
+  products: ProductVignette[];
+}
+
+interface MegaCategory {
+  label: string;
+  value: string;
+  subcategories: Subcategory[];
+}
+
 export default function Header({
   searchQuery,
   setSearchQuery,
@@ -28,17 +47,127 @@ export default function Header({
   onAddProductClick
 }: HeaderProps) {
   const navigate = useNavigate();
-  const [showCategoriesMenu, setShowCategoriesMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  
+  // Mega menu states
+  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+  const [hoveredSubcategory, setHoveredSubcategory] = useState<string | null>(null);
 
-  const categories = [
-    { label: 'Tous les produits', value: 'Tous' },
-    { label: 'Artisanat & Décoration', value: 'Artisanat' },
-    { label: 'Mode & Textiles', value: 'Mode' },
-    { label: 'Épicerie & Épices', value: 'Épicerie' },
-    { label: 'Soins & Saveurs', value: 'Saveurs' },
+  // Hardcoded real images referencing the exact public asset paths to avoid broken assets page
+  const IMAGES = {
+    basket: '/src/assets/images/pannier_tisse_1781282354068.jpg',
+    hoodie: '/src/assets/images/tunique_indigo_1781282369664.jpg',
+    vases: '/src/assets/images/statuettes_vases_1781282386709.jpg',
+    cosmetics: '/src/assets/images/mielles_cosmetiques_1781282401828.jpg',
+    spices: '/src/assets/images/epices_1781282418024.jpg',
+    silk: '/src/assets/images/echarpe_soie_1781282435673.jpg',
+  };
+
+  const megaCategories: MegaCategory[] = [
+    {
+      label: 'Artisanat & Décoration',
+      value: 'Artisanat',
+      subcategories: [
+        {
+          name: 'Paniers & Vanneries',
+          products: [
+            { id: 'une-1', title: 'Panier Tiss Premium', price: 29500, image: IMAGES.basket, seller: 'Amara Studio' },
+            { id: 'spon1-1', title: 'Vase Traditionnel', price: 27500, image: IMAGES.basket, seller: 'Savana Decor' }
+          ]
+        },
+        {
+          name: 'Poteries & Céramiques',
+          products: [
+            { id: 'pop-1', title: 'Vase en Terre Cuite', price: 23000, image: IMAGES.basket, seller: 'Amara Studio' },
+            { id: 'une-3', title: 'Statuette Bronze Royale', price: 98400, image: IMAGES.vases, seller: 'Mama Africa' }
+          ]
+        },
+        {
+          name: 'Sculptures d\'Afrique',
+          products: [
+            { id: 'notes-1', title: 'Statuette Bronze', price: 78700, image: IMAGES.vases, seller: 'Mama Africa' },
+            { id: 'spon2-1', title: 'Masque Tribal', price: 55800, image: IMAGES.vases, seller: 'Benin Arts' }
+          ]
+        }
+      ]
+    },
+    {
+      label: 'Mode & Textiles',
+      value: 'Mode',
+      subcategories: [
+        {
+          name: 'Tuniques & Vestes',
+          products: [
+            { id: 'une-2', title: 'Tunique Indigo Artisanale', price: 42600, image: IMAGES.hoodie, seller: 'Kente Masters' },
+            { id: 'pop-2', title: 'Tunique Brodée', price: 36000, image: IMAGES.hoodie, seller: 'Kente Masters' }
+          ]
+        },
+        {
+          name: 'Boubous & Caftans',
+          products: [
+            { id: 'spon1-2', title: 'Boubou Indigo', price: 51200, image: IMAGES.hoodie, seller: 'Loom Heritage' }
+          ]
+        },
+        {
+          name: 'Écharpes & Étoffes',
+          products: [
+            { id: 'notes-3', title: 'Écharpe en Soie', price: 26200, image: IMAGES.silk, seller: 'Dushop General Seller' },
+            { id: 'spon2-3', title: 'Soie de Tana', price: 32000, image: IMAGES.silk, seller: 'Dushop General Seller' }
+          ]
+        }
+      ]
+    },
+    {
+      label: 'Épicerie & Épices',
+      value: 'Épicerie',
+      subcategories: [
+        {
+          name: 'Épices Rares',
+          products: [
+            { id: 'notes-2', title: 'Épices Berbère', price: 5600, image: IMAGES.spices, seller: 'Épices du Sahel' }
+          ]
+        },
+        {
+          name: 'Assortiments & Coffrets',
+          products: [
+            { id: 'spon2-2', title: 'Coffret Épices', price: 16400, image: IMAGES.spices, seller: 'Épices du Sahel' }
+          ]
+        }
+      ]
+    },
+    {
+      label: 'Soins & Saveurs',
+      value: 'Saveurs',
+      subcategories: [
+        {
+          name: 'Miels Purs d\'Altitude',
+          products: [
+            { id: 'pop-3-variant', title: 'Miel Pur 1kg', price: 12100, image: IMAGES.cosmetics, seller: 'Miel d\'Or' },
+            { id: 'pop-3', title: 'Miel de Forêt', price: 7900, image: IMAGES.cosmetics, seller: 'Miel d\'Or' }
+          ]
+        },
+        {
+          name: 'Cosmétiques de la Ruche',
+          products: [
+            { id: 'pop-3', title: 'Miel de Forêt Cosme', price: 7900, image: IMAGES.cosmetics, seller: 'Miel d\'Or' }
+          ]
+        }
+      ]
+    }
   ];
+
+  // Automatically reset hovered subcategory to the first option when category hover shifts
+  useEffect(() => {
+    if (hoveredCategory) {
+      const activeCatObj = megaCategories.find(c => c.value === hoveredCategory);
+      if (activeCatObj && activeCatObj.subcategories.length > 0) {
+        setHoveredSubcategory(activeCatObj.subcategories[0].name);
+      }
+    } else {
+      setHoveredSubcategory(null);
+    }
+  }, [hoveredCategory]);
 
   const notifications = [
     { id: 1, text: "💬 Amara l'Artisan a lu votre message.", time: "Il y a 5 min", unread: true },
@@ -46,256 +175,238 @@ export default function Header({
     { id: 3, text: "⭐ Événement : Exposition Virtuelle de Statuettes Royales.", time: "Il y a 1 jour", unread: false },
   ];
 
+  // Get active items belonging to subcategory
+  const getSubcategoryProducts = () => {
+    if (!hoveredCategory || !hoveredSubcategory) return [];
+    const activeCatObj = megaCategories.find(c => c.value === hoveredCategory);
+    if (!activeCatObj) return [];
+    const activeSubObj = activeCatObj.subcategories.find(s => s.name === hoveredSubcategory);
+    return activeSubObj ? activeSubObj.products : [];
+  };
+
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-slate-100 shadow-sm" id="main-header">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
-        
-        {/* Logo and Brand */}
-        <div className="flex items-center gap-6 shrink-0">
-          <motion.div 
-            whileHover={{ scale: 1.03 }}
-            onClick={() => { 
-              setSearchQuery(''); 
-              setSelectedCategory('Tous'); 
-              navigate('/');
-            }}
-            className="text-2xl sm:text-3xl font-bold font-display text-brand flex items-center gap-1 cursor-pointer select-none"
-            id="brand-logo"
-          >
-            DuShopPing
-          </motion.div>
-
-          <nav className="hidden lg:flex items-center gap-1">
-            <button
+    <header className="w-full bg-white border-b border-slate-100 shadow-xs" id="main-header">
+      
+      {/* LEVEL 1: Top Navigation Level (Logo, Search Bar, Profil & Actions) */}
+      <div className="border-b border-slate-100/75">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4">
+          
+          {/* Logo Brand */}
+          <div className="shrink-0 animate-fade-in">
+            <motion.div 
+              whileHover={{ scale: 1.02 }}
               onClick={() => { 
-                setSelectedCategory('Tous'); 
                 setSearchQuery(''); 
+                setSelectedCategory('Tous'); 
                 navigate('/');
               }}
-              className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
-                selectedCategory === 'Tous' && !searchQuery
-                  ? 'text-brand bg-brand-light border-b-2 border-brand'
-                  : 'text-slate-600 hover:text-brand hover:bg-slate-50'
-              }`}
+              className="text-2xl sm:text-3xl font-extrabold font-display text-[#02603c] flex items-center gap-1.5 cursor-pointer select-none"
+              id="brand-logo"
             >
-              La place du Marché
-            </button>
-          </nav>
-        </div>
-
-        {/* Search, Categories Dropdown & Interactive Filtering */}
-        <div className="flex-1 max-w-2xl flex items-center gap-2">
-          {/* Categories Popover Trigger */}
-          <div className="relative shrink-0">
-            <button
-              onClick={() => setShowCategoriesMenu(!showCategoriesMenu)}
-              className="flex items-center gap-1.5 px-3 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-slate-700 transition-all cursor-pointer"
-              id="category-menu-trigger"
-            >
-              <Menu className="w-4 h-4 text-[#02603c]" />
-              <span className="hidden sm:inline">Catégories</span>
-              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showCategoriesMenu ? 'rotate-180' : ''}`} />
-            </button>
-
-            <AnimatePresence>
-              {showCategoriesMenu && (
-                <>
-                  <div className="fixed inset-0 z-30" onClick={() => setShowCategoriesMenu(false)} />
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute left-0 mt-2 w-56 rounded-2xl bg-white p-2 shadow-xl border border-slate-100 z-40"
-                  >
-                    <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 tracking-wider uppercase">
-                      CATÉGORIES DUSHOP
-                    </div>
-                    {categories.map((cat) => (
-                      <button
-                        key={cat.value}
-                        onClick={() => {
-                          setSelectedCategory(cat.value);
-                          setShowCategoriesMenu(false);
-                          navigate('/');
-                        }}
-                        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left text-xs sm:text-sm transition-all cursor-pointer ${
-                          selectedCategory === cat.value
-                            ? 'bg-brand-light text-brand font-medium'
-                            : 'text-slate-600 hover:bg-slate-50'
-                        }`}
-                      >
-                        <span>{cat.label}</span>
-                        {selectedCategory === cat.value && <Check className="w-4 h-4 text-brand shrink-0" />}
-                      </button>
-                    ))}
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>
+              <ShoppingBag className="w-6 h-6 sm:w-7 sm:h-7 stroke-[2.5] text-[#02603c]" />
+              <span>DuShopPing</span>
+            </motion.div>
           </div>
 
-          {/* Search Bar */}
-          <div className="relative flex-1">
-            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-slate-400">
-              <Search className="w-4 h-4" />
-            </div>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                navigate('/');
-              }}
-              placeholder="Rechercher par article, artisan ou catégorie..."
-              className="w-full text-xs sm:text-sm pl-9 pr-8 py-2 bg-[#f0f4fc] border border-transparent focus:bg-white focus:ring-2 focus:ring-brand focus:border-brand rounded-2xl placeholder:text-slate-400 transition-all text-slate-800"
-              id="search-input"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                className="absolute inset-y-0 right-3 flex items-center text-xs text-slate-400 hover:text-slate-600 cursor-pointer"
-              >
-                Vider
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Action Controls & Profile info */}
-        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-          {/* Quick Creator Button */}
-          <button
-            onClick={onAddProductClick}
-            className="hidden md:flex items-center gap-1 bg-brand text-white hover:bg-brand-hover px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all shadow-xs cursor-pointer"
-            id="add-product-btn"
-          >
-            <Sparkles className="w-4 h-4 shrink-0" />
-            <span>Vendre</span>
-          </button>
-
-          {/* Favorites triggers */}
-          <button
-            onClick={openFavorites}
-            className="p-2 text-slate-600 hover:text-brand bg-slate-50 hover:bg-brand-light rounded-xl transition-all relative cursor-pointer"
-            title="Favoris"
-            aria-label="Voir les favoris"
-          >
-            <Heart className={`w-5 h-5 ${favoritesCount > 0 ? 'fill-rose-500 text-rose-500' : ''}`} />
-            {favoritesCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center animate-pulse">
-                {favoritesCount}
-              </span>
-            )}
-          </button>
-
-          {/* Notification bell */}
-          <div className="relative">
-            <button
-              onClick={() => setShowNotifications(!showNotifications)}
-              className="p-2 text-slate-600 hover:text-brand bg-slate-50 hover:bg-brand-light rounded-xl transition-all relative cursor-pointer"
-              title="Notifications"
-              aria-label="Notifications"
-              id="notification-trigger"
-            >
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full" />
-            </button>
-
-            <AnimatePresence>
-              {showNotifications && (
-                <>
-                  <div className="fixed inset-0 z-30" onClick={() => setShowNotifications(false)} />
-                  <motion.div
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    className="absolute right-0 mt-2 w-80 rounded-2xl bg-white p-3 shadow-xl border border-slate-100 z-40"
-                  >
-                    <div className="flex items-center justify-between border-b border-slate-50 pb-2 mb-2">
-                      <span className="text-xs font-bold text-slate-800">Alertes DuShop</span>
-                      <button 
-                        onClick={() => setShowNotifications(false)}
-                        className="text-[10px] text-brand hover:underline font-semibold cursor-pointer"
-                      >
-                        Marquer lu
-                      </button>
-                    </div>
-                    <div className="space-y-1">
-                      {notifications.map((notif) => (
-                        <div
-                          key={notif.id}
-                          className={`p-2 rounded-xl text-xs transition-colors hover:bg-slate-50 leading-snug cursor-pointer ${
-                            notif.unread ? 'bg-emerald-50/50 border-l-2 border-brand' : ''
-                          }`}
-                        >
-                          <p className="text-slate-700">{notif.text}</p>
-                          <span className="text-[9px] text-slate-400 mt-1 block">{notif.time}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* User profile Menu */}
-          <div className="relative">
-            <button
-              onClick={() => setShowProfileMenu(!showProfileMenu)}
-              className="flex items-center gap-1.5 rounded-full p-0.5 border border-slate-200 bg-slate-50 hover:bg-slate-100 transition-all cursor-pointer"
-              title="Profil"
-              aria-label="Profil de l'utilisateur"
-              id="profile-trigger"
-            >
-              <img
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&fit=crop&q=80"
-                alt="Profile Avatar"
-                className="w-8 h-8 rounded-full object-cover shadow-inner"
+          {/* Centered Search Bar */}
+          <div className="flex-1 max-w-xl mx-2 sm:mx-6 md:mx-12">
+            <div className="relative">
+              <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-slate-400">
+                <Search className="w-4 h-4" />
+              </div>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  navigate('/');
+                }}
+                placeholder="Rechercher un article, un artisan, ou un mot-clé..."
+                className="w-full text-xs sm:text-sm pl-9 pr-14 py-2.5 bg-slate-50 border border-slate-100 focus:bg-white focus:ring-2 focus:ring-brand focus:border-brand rounded-2xl placeholder:text-slate-400 transition-all text-slate-800"
+                id="search-input"
               />
-            </button>
-
-            <AnimatePresence>
-              {showProfileMenu && (
-                <>
-                  <div className="fixed inset-0 z-30" onClick={() => setShowProfileMenu(false)} />
-                  <motion.div
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    className="absolute right-0 mt-2 w-56 rounded-2xl bg-white p-2 shadow-xl border border-slate-100 z-40 text-xs text-slate-700"
-                  >
-                    <div className="p-3 border-b border-slate-50 mb-1">
-                      <p className="font-bold text-slate-900 text-sm">Prénom Nom</p>
-                      <p className="text-[10px] text-slate-400">joelfreelance3@gmail.com</p>
-                    </div>
-                    <button
-                      onClick={() => { setShowProfileMenu(false); alert('Espace Vendeur en cours de préparation (Version Démo)'); }}
-                      className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-50 transition-colors font-medium flex items-center gap-2 cursor-pointer"
-                    >
-                      🎪 Gérer ma boutique
-                    </button>
-                    <button
-                      onClick={() => { setShowProfileMenu(false); openFavorites(); }}
-                      className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-50 transition-colors font-medium flex items-center gap-2 cursor-pointer"
-                    >
-                      ❤️ Mes produits favoris
-                    </button>
-                    <button
-                      onClick={() => { setShowProfileMenu(false); alert('Historique des appels et messages simulés'); }}
-                      className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-50 transition-colors font-medium flex items-center gap-2 cursor-pointer"
-                    >
-                      📞 Mes demandes d'appel
-                    </button>
-                  </motion.div>
-                </>
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute inset-y-0 right-3 flex items-center text-xs text-rose-500 hover:text-rose-700 font-bold cursor-pointer"
+                >
+                  Effacer
+                </button>
               )}
-            </AnimatePresence>
+            </div>
           </div>
 
+          {/* Visitor Auth Access Links */}
+          <div className="flex items-center gap-4 shrink-0 font-sans" id="auth-visitor-links">
+            <button
+              onClick={() => alert("Connexion (Version Démo)")}
+              className="text-xs sm:text-sm font-bold text-slate-600 hover:text-[#02603c] transition-colors cursor-pointer"
+            >
+              Connexion
+            </button>
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              onClick={() => alert("Inscription (Version Démo)")}
+              className="bg-[#02603c] text-white hover:bg-[#01482c] px-4.5 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold transition-all shadow-xs cursor-pointer"
+            >
+              S'inscrire
+            </motion.button>
+          </div>
         </div>
-
       </div>
+
+      {/* LEVEL 2: Mega Menu & Category Navigation level */}
+      <div className="bg-[#fcfdff] border-b border-slate-100/90 relative" id="bottom-header-row">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-12 flex items-center justify-center relative">
+          
+          {/* List of categories with interactive hover */}
+          <div className="flex items-center justify-center gap-1 sm:gap-4 overflow-x-auto md:overflow-visible scrollbar-hide py-1">
+ 
+            {/* Categories iteration representing active category with mega menu hover */}
+            <div className="flex items-center justify-center gap-1.5 md:gap-4 h-full md:overflow-visible">
+              {megaCategories.map((cat) => {
+                const isActive = selectedCategory === cat.value;
+                return (
+                  <div
+                    key={cat.value}
+                    onMouseEnter={() => setHoveredCategory(cat.value)}
+                    onMouseLeave={() => setHoveredCategory(null)}
+                    className="shrink-0 h-10 flex items-center"
+                  >
+                    <button
+                      onClick={() => {
+                        setSelectedCategory(cat.value);
+                        setHoveredCategory(null);
+                        navigate('/');
+                      }}
+                      className={`px-1 py-2 text-xs sm:text-sm font-extrabold transition-all flex items-center gap-1 cursor-pointer border-b-2 h-full ${
+                        isActive
+                          ? 'border-[#02603c] text-[#02603c]'
+                          : 'border-transparent text-slate-650 hover:text-slate-900'
+                      }`}
+                    >
+                      <span>{cat.label}</span>
+                      <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                    </button>
+ 
+                    {/* INTERACTIVE MEGA MENU dropdown block onHover */}
+                    <AnimatePresence>
+                      {hoveredCategory === cat.value && (
+                        <div 
+                          className="absolute inset-x-0 top-full mt-0.5 w-full bg-white rounded-3xl shadow-2xl p-8 z-50 flex gap-8 md:gap-12 animate-fade-in" 
+                          id="mega-dropdown"
+                          onMouseEnter={() => setHoveredCategory(cat.value)}
+                          onMouseLeave={() => setHoveredCategory(null)}
+                        >
+                          
+                          {/* Left Column: Subcategories list - spaced and aired out */}
+                          <div className="w-[260px] shrink-0 border-r border-slate-100/90 pr-8 space-y-6">
+                            <div>
+                              <h4 className="text-[11px] font-black text-slate-400 tracking-wider uppercase mb-3">
+                                Sous-Catégories
+                              </h4>
+                              <div className="space-y-2 text-left">
+                                {cat.subcategories.map((sub) => (
+                                  <button
+                                    key={sub.name}
+                                    onMouseEnter={() => setHoveredSubcategory(sub.name)}
+                                    onClick={() => {
+                                      setSelectedCategory(cat.value);
+                                      setSearchQuery('');
+                                      setHoveredCategory(null);
+                                      navigate('/');
+                                    }}
+                                    className={`w-full text-left px-4 py-3 rounded-2xl text-xs sm:text-sm font-extrabold transition-all duration-250 flex items-center justify-between border ${
+                                      hoveredSubcategory === sub.name
+                                        ? 'bg-emerald-50/40 text-[#02603c] border-emerald-100 shadow-xs'
+                                        : 'text-slate-600 border-transparent hover:bg-slate-50 hover:text-slate-900'
+                                    }`}
+                                  >
+                                    <span>{sub.name}</span>
+                                    <ArrowRight className={`w-3.5 h-3.5 transition-transform duration-300 ${hoveredSubcategory === sub.name ? 'translate-x-1 text-[#02603c]' : 'text-slate-350'}`} />
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Right Column: Display Vignettes of active subcategory products - extremely airy */}
+                          <div className="flex-1 min-w-0 flex flex-col justify-between">
+                            <div>
+                              <h4 className="text-[11px] font-black text-slate-400 tracking-wider uppercase mb-4 text-left">
+                                Aperçu de la sélection : {hoveredSubcategory || 'Tout afficher'}
+                              </h4>
+
+                              {getSubcategoryProducts().length === 0 ? (
+                                <div className="h-48 flex flex-col items-center justify-center text-center p-6 text-slate-300 bg-slate-50/40 rounded-2xl border border-dashed border-slate-100">
+                                  <ShoppingBag className="w-10 h-10 opacity-30 mb-2" />
+                                  <span className="text-xs">Aucun aperçu disponible</span>
+                                </div>
+                              ) : (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                  {getSubcategoryProducts().map((prod) => (
+                                    <Link
+                                      key={prod.id}
+                                      to={`/product/${prod.id}`}
+                                      onClick={() => setHoveredCategory(null)}
+                                      className="group/vignette flex items-center gap-4 p-3.5 rounded-2xl border border-slate-100/70 hover:border-emerald-200 hover:bg-emerald-50/10 hover:shadow-xs transition-all text-left bg-slate-50/30"
+                                    >
+                                      {/* Product Image */}
+                                      <div className="w-16 h-16 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-100 shadow-xs">
+                                        <img
+                                          src={prod.image}
+                                          alt={prod.title}
+                                          className="w-full h-full object-cover transition-transform duration-500 group-hover/vignette:scale-108"
+                                          referrerPolicy="no-referrer"
+                                        />
+                                      </div>
+                                      {/* Product text metadata */}
+                                      <div className="min-w-0 flex-1 space-y-1">
+                                        <h5 className="text-xs sm:text-sm font-extrabold text-slate-800 truncate group-hover/vignette:text-[#02603c] transition-colors">
+                                          {prod.title}
+                                        </h5>
+                                        <p className="text-[10px] text-slate-400 truncate">{prod.seller}</p>
+                                        <p className="text-xs font-black text-emerald-800 font-mono">
+                                          {prod.price.toLocaleString('fr-FR')} FCFA
+                                        </p>
+                                      </div>
+                                    </Link>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+
+                            {/* bottom dynamic banner inside menu */}
+                            <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                              <span className="text-[11px] text-slate-400">
+                                Vous hésitez ? Vous pouvez contacter l'artisan en un clic pour personnaliser votre pièce.
+                              </span>
+                              <Link
+                                to="/"
+                                onClick={() => {
+                                  setSelectedCategory(cat.value);
+                                  setHoveredCategory(null);
+                                }}
+                                className="text-xs font-black text-[#02603c] hover:underline flex items-center gap-1.5 shrink-0 bg-emerald-50/65 px-4 py-2 rounded-xl transition-all hover:bg-emerald-100"
+                              >
+                                <span>Explorer tout le rayon {cat.label}</span>
+                                <ArrowRight className="w-3.5 h-3.5" />
+                              </Link>
+                            </div>
+                          </div>
+
+                        </div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
+            </div>
+
+          </div>
+        </div>
+      </div>
+      
     </header>
   );
 }

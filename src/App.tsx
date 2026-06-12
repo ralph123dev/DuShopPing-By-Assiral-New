@@ -83,19 +83,22 @@ export default function App() {
     <Router>
       <div className="min-h-screen bg-slate-50 flex flex-col font-sans relative antialiased group" id="dushop-app-root">
         
-        {/* 1. Header Horizontal Billboard publicity */}
-        <Banner728x90 />
+        {/* Sticky Header Group: contains Top Billboard publicity banner and Primary Main Navigation Header */}
+        <div className="sticky top-0 z-40 w-full flex flex-col">
+          {/* 1. Header Horizontal Billboard publicity */}
+          <Banner728x90 />
 
-        {/* 2. Primary Navigation with Search and controls */}
-        <Header
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-          favoritesCount={favorites.length}
-          openFavorites={() => setShowFavorites(true)}
-          onAddProductClick={() => setShowAddProduct(true)}
-        />
+          {/* 2. Primary Navigation with Search and controls */}
+          <Header
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            favoritesCount={favorites.length}
+            openFavorites={() => setShowFavorites(true)}
+            onAddProductClick={() => setShowAddProduct(true)}
+          />
+        </div>
 
         {/* 3. Central Router Outlets */}
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">

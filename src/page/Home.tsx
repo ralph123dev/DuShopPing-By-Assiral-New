@@ -153,7 +153,7 @@ export default function Home({
 
       <div className="flex gap-6 items-start justify-center">
         {/* Left Vertical Ad Banner - 160x600 px */}
-        <div className="hidden xl:block shrink-0 sticky top-24 self-start">
+        <div className="hidden xl:block shrink-0 sticky top-[210px] self-start">
           <SidebarAd position="left" />
         </div>
 
@@ -409,7 +409,7 @@ export default function Home({
         </div>
 
         {/* Right Vertical Ad Banner - 160x600 px */}
-        <div className="hidden xl:block shrink-0 sticky top-24 self-start">
+        <div className="hidden xl:block shrink-0 sticky top-[210px] self-start">
           <SidebarAd position="right" />
         </div>
       </div>
