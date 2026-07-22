@@ -1,7 +1,11 @@
 import { motion } from 'motion/react';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
-export default function HeroBanner() {
+interface HeroBannerProps {
+  onDiscoverOffers: () => void;
+}
+
+export default function HeroBanner({ onDiscoverOffers }: HeroBannerProps) {
   return (
     <div className="relative overflow-hidden rounded-[24px] bg-gradient-to-br from-primary to-primary-hover text-white shadow-xl mb-8 border border-primary-hover">
       {/* Decorative patterns */}
@@ -33,8 +37,10 @@ export default function HeroBanner() {
           
           <div className="pt-2">
             <motion.button 
+              type="button"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              onClick={onDiscoverOffers}
               className="bg-premium hover:bg-premium-hover text-white px-6 py-3.5 rounded-2xl font-extrabold flex items-center gap-2 shadow-lg transition-colors cursor-pointer"
             >
               <span>Découvrir les offres</span>

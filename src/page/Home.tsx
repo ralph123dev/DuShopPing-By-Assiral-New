@@ -6,6 +6,8 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { ChevronLeft, ChevronRight, HelpCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import ProductCard from '../components/ProductCard';
 import SidebarAd from '../components/SidebarAd';
 import HeroBanner from '../components/HeroBanner';
@@ -42,6 +44,18 @@ export default function Home({
   triggerCallSimulation,
   triggerChatSimulation
 }: HomeProps) {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [showAuthPrompt, setShowAuthPrompt] = useState(false);
+
+  const handleDiscoverOffers = () => {
+    if (user) {
+      navigate('/dashboard/boost');
+      return;
+    }
+    setShowAuthPrompt(true);
+  };
+
   // Carousel pagination states
   const [featuredPage, setFeaturedPage] = useState(0);
   const [popularPage, setPopularPage] = useState(0);
@@ -152,7 +166,49 @@ export default function Home({
         </motion.div>
       )}
 
-      {!isFiltering && <HeroBanner />}
+      {!isFiltering && <HeroBanner onDiscoverOffers={handleDiscoverOffers} />}
+
+      {showAuthPrompt && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm mb-8"
+        >
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-lg sm:text-xl font-bold text-slate-900">Accédez aux formules Boost</h2>
+              <p className="text-sm text-slate-500 mt-2 max-w-2xl">
+                Pour consulter votre boutique et choisir une formule boost, connectez-vous ou créez un compte.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                type="button"
+                onClick={() => navigate('/login')}
+                className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-3 rounded-2xl font-semibold transition-colors"
+              >
+                Se connecter
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate('/register')}
+                className="bg-emerald-650 hover:bg-emerald-700 text-white px-5 py-3 rounded-2xl font-semibold transition-colors"
+              >
+                Créer un compte
+              </button>
+            </div>
+          </div>
+          <div className="mt-4 text-right">
+            <button
+              type="button"
+              onClick={() => setShowAuthPrompt(false)}
+              className="text-xs text-slate-400 hover:text-slate-600 underline"
+            >
+              Fermer
+            </button>
+          </div>
+        </motion.div>
+      )}
 
       <div className="flex gap-6 items-start justify-center">
         {/* Left Vertical Ad Banner - 160x600 px */}
