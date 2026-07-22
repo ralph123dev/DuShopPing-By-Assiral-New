@@ -8,6 +8,7 @@ import { motion } from 'motion/react';
 import { ChevronLeft, ChevronRight, HelpCircle } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import SidebarAd from '../components/SidebarAd';
+import HeroBanner from '../components/HeroBanner';
 import SupabaseMigrationConsole from '../components/SupabaseMigrationConsole';
 import { Product } from '../types';
 import {
@@ -151,6 +152,8 @@ export default function Home({
         </motion.div>
       )}
 
+      {!isFiltering && <HeroBanner />}
+
       <div className="flex gap-6 items-start justify-center">
         {/* Left Vertical Ad Banner - 160x600 px */}
         <div className="hidden xl:block shrink-0 sticky top-[210px] self-start">
@@ -211,7 +214,7 @@ export default function Home({
                     <h2 className="text-xl sm:text-2xl font-bold text-slate-900 font-display">
                       Produits À la une
                     </h2>
-                    <span className="text-[10px] bg-orange-100 text-orange-800 border border-orange-200 font-bold px-2 py-0.5 rounded-md tracking-wider uppercase">
+                    <span className="text-[10px] bg-secondary/10 text-secondary border border-secondary/20 font-bold px-2 py-0.5 rounded-md tracking-wider uppercase">
                       SPONSORISÉ
                     </span>
                   </div>
@@ -309,7 +312,7 @@ export default function Home({
                   <h2 className="text-xl sm:text-2xl font-bold text-slate-900 font-display">
                     Produits Sponsorisés
                   </h2>
-                  <span className="text-[10px] bg-amber-500 text-white font-bold px-2.5 py-0.5 rounded-md tracking-widest uppercase">
+                  <span className="text-[10px] bg-premium text-white font-bold px-2.5 py-0.5 rounded-md tracking-widest uppercase shadow-sm">
                     ELITE
                   </span>
                 </div>
@@ -385,7 +388,7 @@ export default function Home({
                   <h2 className="text-xl sm:text-2xl font-bold text-slate-900 font-display">
                     Produits Sponsorisés
                   </h2>
-                  <span className="text-[10px] bg-amber-500 text-white font-bold px-2.5 py-0.5 rounded-md tracking-widest uppercase">
+                  <span className="text-[10px] bg-premium text-white font-bold px-2.5 py-0.5 rounded-md tracking-widest uppercase shadow-sm">
                     ELITE
                   </span>
                 </div>

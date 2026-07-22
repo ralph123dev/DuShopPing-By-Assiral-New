@@ -218,10 +218,10 @@ export default function Header({
                 setSelectedCategory('Tous'); 
                 navigate('/');
               }}
-              className="text-2xl sm:text-3xl font-extrabold font-display text-[#02603c] flex items-center gap-1.5 cursor-pointer select-none"
+              className="text-2xl sm:text-3xl font-extrabold font-display text-primary flex items-center gap-1.5 cursor-pointer select-none"
               id="brand-logo"
             >
-              <ShoppingBag className="w-6 h-6 sm:w-7 sm:h-7 stroke-[2.5] text-[#02603c]" />
+              <ShoppingBag className="w-6 h-6 sm:w-7 sm:h-7 stroke-[2.5] text-primary" />
               <span>DuShopPing</span>
             </motion.div>
           </div>
@@ -240,7 +240,7 @@ export default function Header({
                   navigate('/');
                 }}
                 placeholder="Rechercher un article, un artisan, ou un mot-clé..."
-                className="w-full text-xs sm:text-sm pl-9 pr-14 py-2.5 bg-slate-50 border border-slate-100 focus:bg-white focus:ring-2 focus:ring-brand focus:border-brand rounded-2xl placeholder:text-slate-400 transition-all text-slate-800"
+                className="w-full text-xs sm:text-sm pl-9 pr-14 py-2.5 bg-slate-50 border border-slate-100 focus:bg-white focus:ring-2 focus:ring-primary focus:border-primary rounded-2xl placeholder:text-slate-400 transition-all text-slate-800"
                 id="search-input"
               />
               {searchQuery && (
@@ -262,12 +262,18 @@ export default function Header({
                   {user.role === 'Vendeur' ? 'Compte Vendeur' : 'Acheteur'}
                 </span>
 
-                <div className="relative">
+                <div className="relative flex items-center gap-2">
+                  <button
+                    onClick={onAddProductClick}
+                    className="hidden sm:flex items-center gap-1.5 bg-primary hover:bg-primary-hover text-white px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+                  >
+                    Publier une annonce
+                  </button>
                   <button
                     onClick={() => setShowProfileMenu(!showProfileMenu)}
                     className="flex items-center gap-2 hover:bg-slate-50 p-1.5 rounded-full transition-colors cursor-pointer"
                   >
-                    <div className="w-9 h-9 rounded-full bg-[#02603c] text-white flex items-center justify-center font-bold text-sm overflow-hidden border-2 border-transparent hover:border-emerald-200 transition-colors">
+                    <div className="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm overflow-hidden border-2 border-transparent hover:border-primary-hover transition-colors">
                       {boutiqueLogo ? (
                         <img src={boutiqueLogo} alt="Logo" className="w-full h-full object-cover" />
                       ) : (
@@ -294,7 +300,7 @@ export default function Header({
                               setShowProfileMenu(false);
                               navigate('/dashboard');
                             }}
-                            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate-700 font-extrabold hover:bg-emerald-50 hover:text-[#02603c] transition-colors"
+                            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate-700 font-extrabold hover:bg-emerald-50 hover:text-primary transition-colors"
                           >
                             <Store className="w-4 h-4" />
                             Ma Boutique
@@ -316,21 +322,27 @@ export default function Header({
                 </div>
               </div>
             ) : (
-              <>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={onAddProductClick}
+                  className="hidden md:flex items-center gap-1.5 bg-primary hover:bg-primary-hover text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+                >
+                  Publier une annonce
+                </button>
                 <button
                   onClick={() => navigate('/login')}
-                  className="text-xs sm:text-sm font-bold text-slate-600 hover:text-[#02603c] transition-colors cursor-pointer"
+                  className="text-xs sm:text-sm font-bold text-slate-600 hover:text-primary transition-colors cursor-pointer"
                 >
                   Connexion
                 </button>
                 <motion.button
                   whileTap={{ scale: 0.97 }}
                   onClick={() => navigate('/register')}
-                  className="bg-[#02603c] text-white hover:bg-[#01482c] px-4.5 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold transition-all shadow-xs cursor-pointer"
+                  className="bg-gradient-to-r from-primary to-premium text-white hover:opacity-90 px-4.5 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold transition-all shadow-sm cursor-pointer"
                 >
                   S'inscrire
                 </motion.button>
-              </>
+              </div>
             )}
           </div>
         </div>
@@ -362,7 +374,7 @@ export default function Header({
                       }}
                       className={`px-1 py-2 text-xs sm:text-sm font-extrabold transition-all flex items-center gap-1 cursor-pointer border-b-2 h-full ${
                         isActive
-                          ? 'border-[#02603c] text-[#02603c]'
+                          ? 'border-primary text-primary'
                           : 'border-transparent text-slate-650 hover:text-slate-900'
                       }`}
                     >
@@ -399,12 +411,12 @@ export default function Header({
                                     }}
                                     className={`w-full text-left px-4 py-3 rounded-2xl text-xs sm:text-sm font-extrabold transition-all duration-250 flex items-center justify-between border ${
                                       hoveredSubcategory === sub.name
-                                        ? 'bg-emerald-50/40 text-[#02603c] border-emerald-100 shadow-xs'
+                                        ? 'bg-emerald-50/40 text-primary border-primary/20 shadow-xs'
                                         : 'text-slate-600 border-transparent hover:bg-slate-50 hover:text-slate-900'
                                     }`}
                                   >
                                     <span>{sub.name}</span>
-                                    <ArrowRight className={`w-3.5 h-3.5 transition-transform duration-300 ${hoveredSubcategory === sub.name ? 'translate-x-1 text-[#02603c]' : 'text-slate-350'}`} />
+                                    <ArrowRight className={`w-3.5 h-3.5 transition-transform duration-300 ${hoveredSubcategory === sub.name ? 'translate-x-1 text-primary' : 'text-slate-350'}`} />
                                   </button>
                                 ))}
                               </div>
@@ -443,11 +455,11 @@ export default function Header({
                                       </div>
                                       {/* Product text metadata */}
                                       <div className="min-w-0 flex-1 space-y-1">
-                                        <h5 className="text-xs sm:text-sm font-extrabold text-slate-800 truncate group-hover/vignette:text-[#02603c] transition-colors">
+                                        <h5 className="text-xs sm:text-sm font-extrabold text-slate-800 truncate group-hover/vignette:text-primary transition-colors">
                                           {prod.title}
                                         </h5>
                                         <p className="text-[10px] text-slate-400 truncate">{prod.seller}</p>
-                                        <p className="text-xs font-black text-emerald-800 font-mono">
+                                        <p className="text-xs font-black text-secondary font-mono">
                                           {prod.price.toLocaleString('fr-FR')} FCFA
                                         </p>
                                       </div>
@@ -468,7 +480,7 @@ export default function Header({
                                   setSelectedCategory(cat.value);
                                   setHoveredCategory(null);
                                 }}
-                                className="text-xs font-black text-[#02603c] hover:underline flex items-center gap-1.5 shrink-0 bg-emerald-50/65 px-4 py-2 rounded-xl transition-all hover:bg-emerald-100"
+                                className="text-xs font-black text-primary hover:underline flex items-center gap-1.5 shrink-0 bg-emerald-50/65 px-4 py-2 rounded-xl transition-all hover:bg-emerald-100"
                               >
                                 <span>Explorer tout le rayon {cat.label}</span>
                                 <ArrowRight className="w-3.5 h-3.5" />

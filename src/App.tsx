@@ -130,13 +130,10 @@ export default function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen bg-slate-50 flex flex-col font-sans relative antialiased group" id="dushop-app-root">
+        <div className="min-h-screen bg-bg-main flex flex-col font-sans relative antialiased group text-text-main" id="dushop-app-root">
         
-        {/* Sticky Header Group: contains Top Billboard publicity banner and Primary Main Navigation Header */}
+        {/* Sticky Header Group: contains Primary Main Navigation Header */}
         <div className="sticky top-0 z-40 w-full flex flex-col">
-          {/* 1. Header Horizontal Billboard publicity */}
-          <Banner728x90 />
-
           {/* 2. Primary Navigation with Search and controls */}
           <Header
             searchQuery={searchQuery}
@@ -306,9 +303,9 @@ export default function App() {
                       placeholder="Votre email"
                       className="flex-1 bg-slate-900 border border-slate-750 p-2.5 rounded-xl text-xs sm:text-sm focus:outline-hidden focus:ring-1 focus:ring-brand text-slate-200 placeholder:text-slate-500"
                     />
-                    <button
+                      <button
                       type="submit"
-                      className="bg-[#02603c] hover:bg-emerald-750 text-white font-bold px-3.5 py-2.5 rounded-xl text-xs sm:text-sm transition-colors cursor-pointer"
+                      className="bg-primary hover:bg-primary-hover text-white font-bold px-3.5 py-2.5 rounded-xl text-xs sm:text-sm transition-colors cursor-pointer"
                     >
                       Rejoindre
                     </button>

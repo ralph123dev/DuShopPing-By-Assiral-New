@@ -43,7 +43,7 @@ export default function ProductCard({
       <motion.div
         whileHover={{ y: -6, transition: { duration: 0.15 } }}
         onClick={handleCardClick}
-        className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col h-full relative cursor-pointer"
+        className="bg-bg-card rounded-2xl border border-slate-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full relative cursor-pointer"
         id={`product-card-${product.id}`}
       >
         {/* Favorite Button */}
@@ -62,10 +62,10 @@ export default function ProductCard({
         {/* Sponsor Tag */}
         {product.isSponsorised && (
           <div className="absolute top-3 left-3 z-10">
-            <span className={`text-[9px] font-bold tracking-widest px-2.5 py-1 rounded-md shadow-xs ${
+            <span className={`text-[9px] font-bold tracking-widest px-2.5 py-1 rounded-md shadow-sm ${
               product.sponsorisedTag === 'ELITE'
-                ? 'bg-amber-500 text-white border border-amber-400'
-                : 'bg-orange-100 text-orange-850 border border-orange-200'
+                ? 'bg-premium text-white border border-premium'
+                : 'bg-secondary/10 text-secondary border border-secondary/20'
             }`}>
               {product.sponsorisedTag}
             </span>
@@ -140,7 +140,7 @@ export default function ProductCard({
                   e.stopPropagation();
                   onCallSeller(product);
                 }}
-                className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl border border-slate-200 hover:border-brand text-slate-700 hover:text-brand text-xs font-semibold hover:bg-slate-50 transition-colors cursor-pointer"
+                className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl border border-primary text-primary hover:bg-primary/5 text-xs font-semibold transition-colors cursor-pointer"
               >
                 <Phone className="w-4 h-4 shrink-0" />
                 <span>Appel</span>
@@ -152,7 +152,7 @@ export default function ProductCard({
                   e.stopPropagation();
                   onChatSeller(product);
                 }}
-                className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-brand hover:bg-brand-hover text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
+                className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-semibold shadow-sm transition-colors cursor-pointer"
               >
                 <MessageSquare className="w-4 h-4 shrink-0" />
                 <span>Message</span>
@@ -169,7 +169,7 @@ export default function ProductCard({
       <motion.div
         whileHover={{ y: -5, transition: { duration: 0.15 } }}
         onClick={handleCardClick}
-        className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col h-full relative cursor-pointer"
+        className="bg-bg-card rounded-2xl border border-slate-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full relative cursor-pointer"
         id={`product-card-pop-${product.id}`}
       >
         {/* Favorite Trigger */}
@@ -208,7 +208,7 @@ export default function ProductCard({
         <div className="p-3.5 flex flex-col flex-grow justify-between gap-2 bg-slate-50/40">
           <div>
             {/* Category */}
-            <p className="text-[10px] font-semibold text-[#02603c] tracking-widest uppercase mb-0.5">
+            <p className="text-[10px] font-semibold text-primary tracking-widest uppercase mb-0.5">
               {product.category}
             </p>
             {/* Title */}
@@ -228,7 +228,7 @@ export default function ProductCard({
                   e.stopPropagation();
                   onCallSeller(product);
                 }}
-                className="p-1 px-1.5 text-slate-600 hover:text-brand hover:bg-brand-light rounded transition-all cursor-pointer"
+                className="p-1 px-1.5 text-slate-600 hover:text-primary hover:bg-primary/10 rounded transition-all cursor-pointer"
                 title="Consulter le numéro"
                 aria-label="Appeler le vendeur"
               >
@@ -239,7 +239,7 @@ export default function ProductCard({
                   e.stopPropagation();
                   onChatSeller(product);
                 }}
-                className="p-1 px-1.5 text-slate-600 hover:text-brand hover:bg-brand-light rounded transition-all cursor-pointer"
+                className="p-1 px-1.5 text-slate-600 hover:text-primary hover:bg-primary/10 rounded transition-all cursor-pointer"
                 title="Ouvrir le chat interactif"
                 aria-label="Discuter avec le vendeur"
               >

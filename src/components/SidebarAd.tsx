@@ -420,7 +420,7 @@ export default function SidebarAd({ position, variant = 'vertical', searchQuery 
     return (
       <>
         <div
-          className={`w-full ${hasBoosted ? 'bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200' : 'bg-[#f0f4fc] border-blue-105'} border p-3 sm:p-4 rounded-2xl shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4`}
+          className={`w-full ${hasBoosted ? 'bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200' : 'bg-bg-card border-slate-100'} border p-3 sm:p-4 rounded-2xl shadow-md flex flex-col sm:flex-row items-center justify-between gap-4`}
           id={`${position}-horizontal-ad`}
         >
           {hasBoosted ? (
@@ -436,7 +436,7 @@ export default function SidebarAd({ position, variant = 'vertical', searchQuery 
                 <div className="space-y-1 text-center sm:text-left min-w-0 flex-1">
                   <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
                     <span className="text-[9px] font-bold text-blue-500 tracking-widest uppercase">PUBLICITÉ</span>
-                    <span className="bg-brand text-white text-[8px] font-bold px-2 py-0.5 rounded-full inline-block">{ad.tag}</span>
+                    <span className="bg-primary text-white text-[8px] font-bold px-2 py-0.5 rounded-full inline-block">{ad.tag}</span>
                   </div>
                   <h4 className="text-xs sm:text-sm font-bold text-slate-800 truncate">{ad.title}</h4>
                   <p className="text-[10px] sm:text-xs text-slate-500 line-clamp-2">{ad.description}</p>
@@ -446,7 +446,7 @@ export default function SidebarAd({ position, variant = 'vertical', searchQuery 
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   onClick={handleCtaClick}
-                  className="w-full sm:w-auto bg-[#02603c] hover:bg-brand-hover text-white text-xs font-bold py-2 px-4 rounded-xl flex items-center justify-center gap-1 shadow-xs cursor-pointer"
+                  className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-white text-xs font-bold py-2 px-4 rounded-xl flex items-center justify-center gap-1 shadow-md cursor-pointer"
                 >
                   <Eye className="w-3.5 h-3.5" />
                   <span>{ad.cta}</span>
@@ -469,7 +469,7 @@ export default function SidebarAd({ position, variant = 'vertical', searchQuery 
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className={`w-[160px] ${hasBoosted ? 'bg-gradient-to-b from-amber-50 to-orange-50 border-amber-200' : 'bg-[#f0f4fc] border-blue-100'} border h-[600px] flex flex-col justify-between p-4 rounded-2xl shrink-0 shadow-xs relative`}
+          className={`w-[160px] ${hasBoosted ? 'bg-gradient-to-b from-amber-50 to-orange-50 border-amber-200' : 'bg-bg-card border-slate-100'} border h-[600px] flex flex-col justify-between p-4 rounded-2xl shrink-0 shadow-md relative`}
           id={`${position}-sidebar-ad`}
         >
           {hasBoosted ? (
@@ -483,7 +483,7 @@ export default function SidebarAd({ position, variant = 'vertical', searchQuery 
                 <div className="flex items-center justify-between border-b border-blue-100/50 pb-2 mb-3">
                   <span className="text-[9px] font-bold text-blue-500 tracking-widest uppercase">PUBLICITÉ</span>
                 </div>
-                <span className="bg-brand text-white text-[8px] font-bold px-2 py-0.5 rounded-full inline-block mb-2">{ad.tag}</span>
+                <span className="bg-primary text-white text-[8px] font-bold px-2 py-0.5 rounded-full inline-block mb-2">{ad.tag}</span>
                 <h4 className="text-xs font-bold text-slate-800 leading-tight mb-2">{ad.title}</h4>
                 <p className="text-[10px] text-slate-500 leading-normal mb-3">{ad.description}</p>
               </div>
@@ -500,7 +500,7 @@ export default function SidebarAd({ position, variant = 'vertical', searchQuery 
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   onClick={handleCtaClick}
-                  className="w-full bg-[#02603c] hover:bg-brand-hover text-white text-xs font-bold py-2 rounded-xl flex items-center justify-center gap-1 shadow-xs cursor-pointer"
+                  className="w-full bg-primary hover:bg-primary-hover text-white text-xs font-bold py-2 rounded-xl flex items-center justify-center gap-1 shadow-md cursor-pointer"
                 >
                   <Eye className="w-3.5 h-3.5" />
                   <span>{ad.cta}</span>

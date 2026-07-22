@@ -6,16 +6,32 @@
   --font-display: "Space Grotesk", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
   
-  --color-brand-light: #f4fbf7;
-  --color-brand: #02603c;
-  --color-brand-hover: #014c2f;
-  --color-brand-dark: #003721;
+  /* Nouvelle charte graphique DuShopPing */
+  --color-primary: #14833B;
+  --color-primary-hover: #106A2F;
+  --color-secondary: #D81E24;
+  --color-secondary-hover: #B0171D;
+  --color-premium: #F4B400;
+  --color-premium-hover: #D49C00;
+  
+  --color-bg-main: #FFFFFF;
+  --color-bg-card: #F8F9FA;
+  --color-separator: #E5E7EB;
+  
+  --color-text-main: #1F2937;
+  --color-text-muted: #6B7280;
+  
+  /* Utilitaires pour compatibilité et alias */
+  --color-brand: #14833B;
+  --color-brand-hover: #106A2F;
+  --color-brand-light: #E7F3EC;
+  --color-brand-dark: #0D5225;
 }
 
 body {
   font-family: var(--font-sans);
-  background-color: #f8fafc;
-  color: #1e293b;
+  background-color: var(--color-bg-main);
+  color: var(--color-text-main);
 }
 
 /* Custom scrollbar */
@@ -24,7 +40,7 @@ body {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: var(--color-bg-card);
 }
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
